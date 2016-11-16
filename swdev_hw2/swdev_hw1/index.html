@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	    <title>Calculator</title>
+		<link rel="icon" type="image/gif/png" href="image/gif/Calculator-icon.png">
+		 <style type="text/css">
+			body{ background-color: black;}
+			.calc{ background-color: black;
+					border-style:solid;
+					border-color: #FFCD00;
+					border-radius: 20px;
+					height: 700px;
+					width: 450px;
+					padding: 20px 20px 20px 20px;
+					font-family: arial, helvetica, sans-serif; 
+			}
+			img.title{display:block;
+					margin-left: auto;
+					margin-right: auto;
+			}
+			p.ans{
+			  font-family: "Times New Roman", Times, serif;
+			  color:white;
+			  text-align:right;
+			  font-size:200%;
+			}
+			h4.c_ans{
+			  font-family: "Times New Roman", Times, serif;
+			  color:white;
+			  font-size:150%;
+			  display: table-cell;
+			   vertical-align: middle;
+			}
+      </style>
+	  <script>
+	  var screenin="0";
+	  var i=0;
+	  var x = document.getElementById("screen");
+	  //var mode="dec";
+		var store="0";
+	  var digit=0;
+		function clre(){
+		screenin=store;
+		x.innerHTML=screenin;
+		}
+		function clr(){
+		screenin="0";
+		store="0";
+		x.innerHTML=screenin;
+		}
+		function bs(){
+		 screenin=screenin.slice(0,-1);
+		 if(screenin.length==0)screenin=0;
+		 x.innerHTML=screenin; 
+		}
+	  function num(z){
+	    if(screenin=="0"){
+		screenin=z;
+		}
+		else{
+		screenin+=z;
+		}
+		//screenin=fst;
+	    x=document.getElementById("screen");  // 找到元素
+		x.innerHTML=screenin;  
+	   }
+	   function IsNumeric(input){
+		var RE = /^-{0,1}\d*\.{0,1}\d+$/;
+		return (RE.test(input));
+}
+	    function cal(){
+		 var arr=[];
+		var op=[];
+		var signed=false;
+		digit=0;
+		for(var j=0;j<screenin.length;j++){
+		if(IsNumeric(screenin[j])==true){
+			digit*=10;
+			digit+=Number(screenin[j]);
+		}
+		else if(screenin[j]=="+"){
+		    if(signed){digit*=-1;signed=false;}
+			op.push("+");
+			arr.push(digit);
+			digit=0;
+		}
+		else if(screenin[j]=="*"){
+			if(signed){digit*=-1;signed=false;}
+			op.push("*");
+			arr.push(digit);
+			digit=0;
+		}
+		else if(screenin[j]=="%"){
+			if(signed){digit*=-1;signed=false;}
+			op.push("%");
+			arr.push(digit);
+			digit=0;
+		}
+		else if(screenin[j]=="m"){
+			if(signed){digit*=-1;signed=false;}
+			op.push("mod");
+			arr.push(digit);
+			digit=0;
+			j+=2;
+		}
+		else if(screenin[j]=="-"&&screenin[j+1]==" "){
+			if(signed){digit*=-1;signed=false;}
+			op.push("-");
+			arr.push(digit);
+			digit=0;
+		}
+		else if(screenin[j]=="-"){
+			signed=true;
+		}
+		
+		}
+		if(signed){digit*=-1;signed=false;}
+		arr.push(digit);
+		digit=0;
+		if(arr.length==1){
+		var h = document.getElementById("h");
+	    var d = document.getElementById("d");
+	    var o = document.getElementById("o");
+	    var b = document.getElementById("b");
+			screenin="0";
+			x.innerHTML=screenin; 
+			
+			h.innerHTML=arr[0].toString(16).toUpperCase();
+			d.innerHTML=arr[0].toString(10);
+			o.innerHTML=arr[0].toString(8);
+			b.innerHTML=arr[0].toString(2);
+		}
+		else{
+		var j=0;
+		while(j!=op.length){
+			if(op[j]=="*"){
+				arr[j]=arr[j]*arr[j+1];
+				arr.splice(j+1,1);
+				op.splice(j,1);
+			}
+			else if(op[j]=="%"){
+				arr[j]=arr[j]/arr[j+1];
+				arr.splice(j+1,1);
+				op.splice(j,1);
+			}
+			else if(op[j]=="mod"){
+			    
+				arr[j]=arr[j]%arr[j+1];
+				x.innerHTML=arr[j]; 
+				arr.splice(j+1,1);
+				op.splice(j,1);
+			}
+			else
+			j++;
+		}
+		j=0;
+		while(j!=op.length){
+			if(op[j]=="+"){
+				arr[j]=arr[j]+arr[j+1];
+				arr.splice(j+1,1);
+				op.splice(j,1);
+			}
+			else if(op[j]=="-"){
+				arr[j]=arr[j]-arr[j+1];
+				arr.splice(j+1,1);
+				op.splice(j,1);
+			}
+			else
+			j++;
+		}
+		 x=document.getElementById("screen");  // 找到元素
+		 store=arr[0];
+		 screenin=store;
+		 x.innerHTML=store;  
+		
+		
+		}
+		
+	  }
+	  </script>
+	</head>
+	
+	<body style="
+    margin-bottom: 6px;
+    height: 775px;
+">
+		<div class="calc" style="
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 590px;
+    width: 390px;
+">
+			<img class="title" src="img/color/calcl.png" width="250" height="50" alt="Calculator" style="
+    width: 200px;
+    height: 40px;
+">
+			
+			<p class="ans" style="
+    margin-top: 0px;
+    margin-bottom: 0px;
+"id="screen">0</p>
+			
+			<img src="img/color/hex.png" width="70" height="21" alt="hex" style="float:left;" ><h4 class="c_ans"id="h">0</h4>
+			<br>
+			<img src="img/color/dec.png" width="70" height="21" alt="dec" style="float:left;" ><h4 class="c_ans"id="d">0</h4>
+			<br>
+			<img src="img/color/oct.png" width="70" height="21" alt="oct" style="float:left;" ><h4 class="c_ans"id="o">0</h4>
+			<br>
+			<img src="img/color/bin.png" width="70" height="21" alt="bin" style="float:left;" ><h4 class="c_ans"id="b">0</h4>
+			<br>
+			<img src="img/color/emp.png" width="60" height="60" alt="emp">
+			<img src="img/color/mod.png" width="60" height="60" alt="mod" onclick="num(' mod ')">
+			<img src="img/color/ce.png" width="60" height="60" alt="CE"onclick="clre()">
+			<img src="img/color/opc.png" width="60" height="60" alt="opC" onclick="clr()">
+			<img src="img/color/back.png" width="60" height="60" alt="back" onclick="bs()">
+			<img src="img/color/perc.png" width="60" height="60" alt="perc" onclick="num(' % ')">
+			<br>
+			<img src="img/color/A.png" width="60" height="60" alt="A" onclick="num('A')">
+			<img src="img/color/B.png" width="60" height="60" alt="B" onclick="num('B')">
+			<img src="img/color/7.png" width="60" height="60" alt="7" onclick="num('7')">
+			<img src="img/color/8.png" width="60" height="60" alt="8" onclick="num('8')">
+			<img src="img/color/9.png" width="60" height="60" alt="9" onclick="num('9')">
+			<img src="img/color/mul.png" width="60" height="60" alt="mul" onclick="num(' * ')">
+			<br>
+			<img src="img/color/C.png" width="60" height="60" alt="C" onclick="num('C')">
+			<img src="img/color/D.png" width="60" height="60" alt="D" onclick="num('D')">
+			<img src="img/color/4.png" width="60" height="60" alt="4" onclick="num('4')">
+			<img src="img/color/5.png" width="60" height="60" alt="5" onclick="num('5')">
+			<img src="img/color/6.png" width="60" height="60" alt="6" onclick="num('6')">
+			<img src="img/color/sub.png" width="60" height="60" alt="sub" onclick="num(' - ')">
+			<br>
+			<img src="img/color/E.png" width="60" height="60" alt="E" onclick="num('E')">
+			<img src="img/color/F.png" width="60" height="60" alt="F" onclick="num('F')">
+			<img src="img/color/1.png" width="60" height="60" alt="1" onclick="num('1')">
+			<img src="img/color/2.png" width="60" height="60" alt="2"onclick="num('2')">
+			<img src="img/color/3.png" width="60" height="60" alt="3"onclick="num('3')">
+			<img src="img/color/add.png" width="60" height="60" alt="add" onclick="num(' + ')">
+			<br>
+			<img src="img/color/emp.png" width="60" height="60" alt="emp">
+			<img src="img/color/emp.png" width="60" height="60" alt="emp">
+			<img src="img/color/sign.png" width="60" height="60" alt="sign" onclick="num('-')">
+			<img src="img/color/0.png" width="60" height="60" alt="0" onclick="num('0')">
+			<img src="img/color/emp.png" width="60" height="60" alt="emp">
+			<img src="img/color/eq.png" width="60" height="60" alt="eq" onclick="cal()">
+			<br>
+		</div>
+      
+  
+
+
+	
+
+
+
+	
+</body></html>
