@@ -6,7 +6,7 @@ var lastOpnd = 0;
 var lastOptr = '';
 var currSys = 'dec';
 const convertSys = {'hex':16, 'dec':10, 'oct':8, 'bin':2};
-//asdasd
+
 var precedence = function(a, b) { // return if a <= b
     if( '+-'.indexOf(a) === -1 ){
         if( '+-'.indexOf(b) === -1 ) return true; //a == b
